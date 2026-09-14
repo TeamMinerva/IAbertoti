@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Composite: menor "folha" da árvore de componentes da GUI, representa uma única mensagem -->
+<div th:fragment="mensagem(msg)" th:classappend="${msg.autor().name() == 'USUARIO'} ? 'mensagem-usuario' : 'mensagem-assistente'" class="mensagem">
+    <strong th:text="${msg.autor().name()}">AUTOR</strong>
+    <p th:text="${msg.conteudo()}">conteudo</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Composite: "galho" da árvore, composto por vários fragmentos de mensagem individual -->
+<div th:fragment="lista(mensagens)" id="lista-mensagens">
+    <p th:if="${#lists.isEmpty(mensagens)}">Nenhuma mensagem ainda. Faça sua primeira pergunta.</p>
+    <div th:each="msg : ${mensagens}">
+        <div th:replace="~{fragments/mensagem :: mensagem(${msg})}"></div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -31,7 +31,6 @@ o enunciado pede que a aplicacao use os seguintes padroes, aplicados de forma qu
 </p>
 
 ## Primeira entrega
-essa primeira entrega representa o MVP definido para essa etapa do projeto, ainda não é o projeto completo. o escopo abaixo foi o combinado pelo time para essa fase.
 
 ### o que esta pronto nesse MVP
 - projeto Spring Boot rodando, gerado via Spring Initializr, com Java 21 e as dependencias Spring Web e Thymeleaf.
@@ -77,4 +76,3 @@ a parte de IA de verdade (leitura do arquivo de texto, scrapping, geracao de res
     </table>
 </div>
 
-github e linkedin de cada integrante entram aqui depois, quando a gente tiver esses dados.
