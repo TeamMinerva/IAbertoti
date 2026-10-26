@@ -5,17 +5,13 @@
     <a href="#descrição-do-projeto"> Descrição do projeto </a> |
     <a href="#padrões-de-projeto-exigidos"> Padrões de projeto exigidos </a> |
     <a href="#tecnologias-utilizadas"> Tecnologias utilizadas </a> |
-    <a href="#primeira-entrega"> Primeira entrega </a> |
     <a href="#equipe"> Equipe </a> |
 </p>
 
 ## Descrição do projeto
-esse projeto faz parte da disciplina de Engenharia de Software III, e tambem como base teorica para a API do 4° Semestre de ADS.
-a proposta é criar um agente de IA que siga um padrão simples de respostas, utilizando de Spring Boot em Java, o que é diferente da stack da API que é totalmente web envolvendo typescript + vite e react. mas a ideia e a forma de implementar é a mesma. É uma IA de perguntas e respostas, a gente vai entregar para ela um arquivo de texto, e ela irá extrair fazendo scrapping e depois formulando uma resposta em cima disso.
+projeto da disciplina de API (4° Semestre de ADS), feito em Spring Boot/Java. é uma IA de perguntas e respostas: a gente entrega um arquivo de texto pra ela, e ela extrai o conteúdo e formula uma resposta em cima disso.
 
 ## Padrões de projeto exigidos
-o enunciado pede que a aplicacao use os seguintes padroes, aplicados de forma que de para explicar via UML onde cada um esta na arquitetura:
-
 - State: representa os estados possiveis de uma sessao de conversa (aguardando pergunta, processando, respondido), e cada estado se comporta de um jeito diferente quando recebe uma nova pergunta.
 - Command: encapsula as acoes disparadas pela interface (como enviar uma pergunta) em objetos separados, desacoplando a interface da logica que ela executa.
 - Strategy: permite trocar a forma como a resposta e gerada sem alterar o resto do sistema, o que futuramente vai permitir plugar um modelo de IA real no lugar de uma resposta simplificada.
@@ -30,48 +26,48 @@ o enunciado pede que a aplicacao use os seguintes padroes, aplicados de forma qu
   <img src="https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white">
 </p>
 
-## Primeira entrega
-
-### o que esta pronto nesse MVP
-- projeto Spring Boot rodando, gerado via Spring Initializr, com Java 21 e as dependencias Spring Web e Thymeleaf.
-- modelo basico das mensagens da conversa: `Mensagem` (guarda quem enviou e o conteudo) e `Autor` (enum com os valores usuario e assistente).
-- padrao State implementado por completo: a classe `SessaoChat` guarda o estado atual da conversa e delega o processamento da pergunta para ele. os tres estados possiveis sao `AguardandoPerguntaState`, `ProcessandoState` e `RespondidoState`, cada um reagindo de um jeito diferente quando uma pergunta chega.
-- padrao Command, encapsulando a acao de enviar uma pergunta pela interface.
-- padrao Strategy, com uma estrategia simples de resposta (sem IA de verdade ainda, so pra provar a arquitetura).
-- padrao Observer, ligando a geracao da resposta a interface.
-- controller Spring MVC e templates Thymeleaf, aplicando o padrao Composite na composicao dos fragmentos da pagina.
-- diagramas UML (PlantUML) mostrando onde cada um dos 5 padroes esta na arquitetura, na pasta `docs/uml`.
-- documento curto explicando as decisoes tomadas nessa etapa, na pasta `docs`.
-
-### o que fica de fora dessa entrega, de proposito
-a parte de IA de verdade (leitura do arquivo de texto, scrapping, geracao de resposta usando um modelo real) ainda nao esta implementada. essa decisao foi tomada porque essa e so a primeira entrega, nao o projeto inteiro, e o foco aqui e deixar a arquitetura com os 5 padroes de projeto ja aplicados e defensavel, sem depender de infraestrutura externa (como um modelo de IA rodando localmente) no dia da entrega. a base ja fica pronta pra receber essa parte depois, sem precisar reescrever o resto.
-
 ## Equipe
 <div align="center">
     <table>
         <tr>
             <th>Membro</th>
+            <th>Github</th>
+            <th>Linkedin</th>
         </tr>
         <tr>
             <td>Guilherme Rosa</td>
+            <td><a href="https://github.com/GuilhermeMRosa"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/guilherme-rosa-518047387/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
         </tr>
         <tr>
             <td>Isaura Batista</td>
+            <td><a href="https://github.com/sunrhse"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/isaura-de-lourdes-0561742aa"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
         </tr>
         <tr>
             <td>Leticia Furtado</td>
+            <td><a href="https://github.com/LeticiaG24"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/letícia-furtado-053b6033a"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
         </tr>
         <tr>
             <td>Fernanda Pereira</td>
+            <td><a href="https://github.com/Fernanda192028"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/fernanda-pereira-252076362"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
         </tr>
         <tr>
             <td>Wendy Mininel</td>
+            <td><a href="https://github.com/WendyMininel"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/wendy-mininel-279300353"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
         </tr>
         <tr>
             <td>Gustavo Garcia</td>
+            <td><a href="https://github.com/gustav0-gg"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/ggg-"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
         </tr>
         <tr>
             <td>Caio César</td>
+            <td><a href="https://github.com/JkDeltaz"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/caio-c%C3%A9sar-santos-79976636a/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
         </tr>
     </table>
 </div>
