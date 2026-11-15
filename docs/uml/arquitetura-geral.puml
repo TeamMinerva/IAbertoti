@@ -1,0 +1,130 @@
+@startuml ArquiteturaGeral
+title IAbertoti - Arquitetura Geral da Aplicação e Mapeamento dos 5 Design Patterns
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam roundcorner 10
+skinparam shadowing false
+
+package "Camada de Apresentação (GUI)" {
+    class "Thymeleaf Templates" as GUI <<Composite>> {
+        chat.html (Root)
+        painel-conhecimento.html (Galho)
+        lista-mensagens.html (Galho)
+        mensagem.html (Folha)
+    }
+
+    class ChatController <<Invoker - Command>> {
+        + exibirChat(model: Model): String
+        + enviarPergunta(pergunta: String): String
+        + carregarDocumento(arquivo: MultipartFile, ...): String
+        + limparDocumento(...): String
+        + alternarEstrategia(estrategia: String, ...): String
+    }
+}
+
+package "Padrão Command" {
+    interface Comando {
+        + executar(): void
+    }
+    class EnviarPerguntaCommand
+    class CarregarDocumentoCommand
+    class LimparDocumentoCommand
+    class AlternarEstrategiaCommand
+
+    Comando <|.. EnviarPerguntaCommand
+    Comando <|.. CarregarDocumentoCommand
+    Comando <|.. LimparDocumentoCommand
+    Comando <|.. AlternarEstrategiaCommand
+}
+
+package "Camada de Negócio / Serviços" {
+    class ChatService <<Context & Subject>> {
+        - sessao: SessaoChat
+        - estrategiaAtual: EstrategiaResposta
+        - observadores: List<ObservadorResposta>
+        + enviarPergunta(pergunta: String): void
+        + carregarDocumentoArquivo(arquivo: MultipartFile): DocumentoConhecimento
+        + carregarDocumentoTexto(nome: String, texto: String): DocumentoConhecimento
+        + limparDocumento(): void
+        + selecionarEstrategia(nomeEstrategia: String): void
+    }
+
+    class ConhecimentoService {
+        - documentoAtual: DocumentoConhecimento
+        + carregarArquivo(arquivo: MultipartFile): DocumentoConhecimento
+        + carregarTexto(nome: String, texto: String): DocumentoConhecimento
+        + montarPrompt(pergunta: String): Prompt
+        + temConhecimentoCarregado(): boolean
+        + limpar(): void
+    }
+}
+
+package "Padrão State (Ciclo de Vida)" {
+    class SessaoChat {
+        - estadoAtual: EstadoSessao
+        - mensagens: List<Mensagem>
+        + processarPergunta(pergunta: String): void
+        + finalizarResposta(resposta: Mensagem): void
+    }
+    interface EstadoSessao {
+        + processarPergunta(sessao: SessaoChat, pergunta: String): void
+        + finalizarResposta(sessao: SessaoChat, resposta: Mensagem): void
+    }
+    class AguardandoPerguntaState
+    class ProcessandoState
+    class RespondidoState
+
+    EstadoSessao <|.. AguardandoPerguntaState
+    EstadoSessao <|.. ProcessandoState
+    EstadoSessao <|.. RespondidoState
+    SessaoChat o--> "1" EstadoSessao : estadoAtual
+}
+
+package "Padrão Strategy (Geração de Resposta)" {
+    interface EstrategiaResposta {
+        + gerarResposta(pergunta: String): String
+    }
+    class SpringAiKnowledgeStrategy <<@Primary>>
+    class EcoStrategy
+
+    EstrategiaResposta <|.. SpringAiKnowledgeStrategy
+    EstrategiaResposta <|.. EcoStrategy
+}
+
+package "Padrão Observer (Telemetria & Eventos)" {
+    interface ObservadorResposta {
+        + onRespostaPronta(resposta: Mensagem): void
+    }
+    class LogObservador
+    class MetricasObservador
+
+    ObservadorResposta <|.. LogObservador
+    ObservadorResposta <|.. MetricasObservador
+}
+
+package "Infraestrutura Spring AI & Modelo Open-Source" {
+    class ChatClient
+    class "Ollama Server (Local:11434)" as Ollama <<Open Source>> {
+        Modelo: llama3.1 / llama3.2
+    }
+}
+
+' Relacionamentos
+GUI ..> ChatController : Dispara requisições HTTP
+ChatController ..> Comando : Cria e invoca
+EnviarPerguntaCommand o--> ChatService : Executa ação
+CarregarDocumentoCommand o--> ChatService : Executa ação
+LimparDocumentoCommand o--> ChatService : Executa ação
+AlternarEstrategiaCommand o--> ChatService : Executa ação
+
+ChatService *--> SessaoChat : Controla fluxo (State)
+ChatService o--> EstrategiaResposta : Obtém resposta (Strategy)
+ChatService o--> ObservadorResposta : Notifica eventos (Observer)
+ChatService o--> ConhecimentoService : Gerencia base de documentos
+
+SpringAiKnowledgeStrategy o--> ConhecimentoService : Consulta prompt/contexto
+SpringAiKnowledgeStrategy o--> ChatClient : Invoca modelo
+ChatClient --> Ollama : Requisição HTTP local
+
+@enduml

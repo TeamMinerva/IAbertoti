@@ -1,0 +1,53 @@
+@startuml ObserverPattern
+title Padrão Observer - Notificação de Respostas da IA
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam roundcorner 10
+skinparam shadowing false
+
+package "br.com.minerva.iabertoti.observer" {
+    interface ObservadorResposta <<interface>> {
+        + onRespostaPronta(resposta: Mensagem): void
+    }
+
+    class LogObservador {
+        + onRespostaPronta(resposta: Mensagem): void
+    }
+
+    class MetricasObservador {
+        - totalRespostas: int
+        - totalCaracteres: long
+        - ultimaRespostaEm: LocalDateTime
+        + onRespostaPronta(resposta: Mensagem): void
+        + getTotalRespostas(): int
+        + getTotalCaracteres(): long
+        + getUltimaRespostaEm(): LocalDateTime
+        + getMediaCaracteres(): double
+    }
+}
+
+package "br.com.minerva.iabertoti.service" {
+    class ChatService <<Subject>> {
+        - observadores: List<ObservadorResposta>
+        + adicionarObservador(observador: ObservadorResposta): void
+        - notificarObservadores(resposta: Mensagem): void
+        + enviarPergunta(pergunta: String): void
+    }
+}
+
+package "br.com.minerva.iabertoti.model" {
+    class Mensagem <<record>> {
+        + autor: Autor
+        + conteudo: String
+    }
+}
+
+ObservadorResposta <|.. LogObservador
+ObservadorResposta <|.. MetricasObservador
+
+ChatService o--> "*" ObservadorResposta : observadores
+ChatService ..> Mensagem : entrega notificação >
+ObservadorResposta ..> Mensagem : consome dados >
+
+@enduml

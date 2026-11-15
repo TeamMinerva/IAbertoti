@@ -1,0 +1,77 @@
+@startuml CommandPattern
+title Padrão Command - Encapsulamento de Ações da Interface
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam roundcorner 10
+skinparam shadowing false
+
+package "br.com.minerva.iabertoti.command" {
+    interface Comando <<interface>> {
+        + executar(): void
+    }
+
+    class EnviarPerguntaCommand {
+        - chatService: ChatService
+        - pergunta: String
+        + EnviarPerguntaCommand(chatService: ChatService, pergunta: String)
+        + executar(): void
+    }
+
+    class CarregarDocumentoCommand {
+        - chatService: ChatService
+        - arquivo: MultipartFile
+        - nomeDocumento: String
+        - textoDireto: String
+        + CarregarDocumentoCommand(chatService: ChatService, arquivo: MultipartFile)
+        + CarregarDocumentoCommand(chatService: ChatService, nome: String, texto: String)
+        + executar(): void
+    }
+
+    class LimparDocumentoCommand {
+        - chatService: ChatService
+        + LimparDocumentoCommand(chatService: ChatService)
+        + executar(): void
+    }
+
+    class AlternarEstrategiaCommand {
+        - chatService: ChatService
+        - nomeEstrategia: String
+        + AlternarEstrategiaCommand(chatService: ChatService, nome: String)
+        + executar(): void
+    }
+}
+
+package "br.com.minerva.iabertoti.controller" {
+    class ChatController <<Invoker>> {
+        - chatService: ChatService
+        + exibirChat(model: Model): String
+        + enviarPergunta(pergunta: String): String
+        + carregarDocumento(arquivo: MultipartFile, texto: String, nome: String, ...): String
+        + limparDocumento(...): String
+        + alternarEstrategia(estrategia: String, ...): String
+    }
+}
+
+package "br.com.minerva.iabertoti.service" {
+    class ChatService <<Receiver>> {
+        + enviarPergunta(pergunta: String): void
+        + carregarDocumentoArquivo(arquivo: MultipartFile): DocumentoConhecimento
+        + carregarDocumentoTexto(nome: String, texto: String): DocumentoConhecimento
+        + limparDocumento(): void
+        + selecionarEstrategia(nomeEstrategia: String): void
+    }
+}
+
+Comando <|.. EnviarPerguntaCommand
+Comando <|.. CarregarDocumentoCommand
+Comando <|.. LimparDocumentoCommand
+Comando <|.. AlternarEstrategiaCommand
+
+ChatController ..> Comando : instancia e executa >
+EnviarPerguntaCommand o--> "1" ChatService : receiver
+CarregarDocumentoCommand o--> "1" ChatService : receiver
+LimparDocumentoCommand o--> "1" ChatService : receiver
+AlternarEstrategiaCommand o--> "1" ChatService : receiver
+
+@enduml

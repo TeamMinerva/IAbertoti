@@ -4,32 +4,43 @@ import br.com.minerva.iabertoti.state.AguardandoPerguntaState;
 import br.com.minerva.iabertoti.state.EstadoSessao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+/**
+ * Contexto do padrao State: mantem o estado atual da sessao de conversa
+ * e delega o processamento da pergunta e a finalizacao da resposta para ele.
+ */
 public class SessaoChat {
 
     private EstadoSessao estadoAtual;
-    private List<Mensagem> mensagens = new ArrayList<>();
+    private final List<Mensagem> mensagens = new ArrayList<>();
 
-
-    public SessaoChat(){
+    public SessaoChat() {
         this.estadoAtual = new AguardandoPerguntaState();
     }
 
-    public void processarPergunta(String pergunta){
+    public void processarPergunta(String pergunta) {
         estadoAtual.processarPergunta(this, pergunta);
     }
 
-    public void mudarEstado(EstadoSessao novoEstado){
+    public void finalizarResposta(Mensagem resposta) {
+        estadoAtual.finalizarResposta(this, resposta);
+    }
+
+    public void mudarEstado(EstadoSessao novoEstado) {
         this.estadoAtual = novoEstado;
     }
 
-    public void adicionarMensagem(Mensagem mensagem){
+    public EstadoSessao getEstadoAtual() {
+        return estadoAtual;
+    }
+
+    public void adicionarMensagem(Mensagem mensagem) {
         this.mensagens.add(mensagem);
     }
 
-    public List<Mensagem> getMensagens(){
-        return mensagens;
+    public List<Mensagem> getMensagens() {
+        return Collections.unmodifiableList(mensagens);
     }
-
 }

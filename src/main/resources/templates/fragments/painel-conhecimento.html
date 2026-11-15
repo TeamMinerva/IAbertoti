@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Composite: "galho" da arvore de componentes dedicado a gestao do conhecimento e configuracoes da sessao -->
+<div th:fragment="painel(documento, temDocumento, estrategiaAtual, estrategias, metricas, estadoSessao)" class="painel-conhecimento card">
+    <div class="card-header">
+        <h3>Base de Conhecimento (Knowledge Assistant)</h3>
+        <div class="badges">
+            <span class="badge badge-estado" th:text="'Estado: ' + ${estadoSessao}">Estado: Aguardando Pergunta</span>
+            <span class="badge badge-estrategia" th:text="'Estrategia: ' + ${estrategiaAtual}">Estrategia: SpringAiKnowledgeStrategy</span>
+        </div>
+    </div>
+
+    <!-- Status do documento -->
+    <div class="documento-status">
+        <div th:if="${temDocumento}" class="alert alert-success">
+            <strong>Documento Ativo:</strong>
+            <span th:text="${documento.nome}">manual.txt</span>
+            (<span th:text="${documento.tamanhoBytes}">1024</span> bytes)
+            - Carregado em <span th:text="${#temporals.format(documento.dataCarregamento, 'dd/MM/yyyy HH:mm:ss')}">data</span>
+            <form th:action="@{/chat/documento/limpar}" method="post" style="display:inline; margin-left: 10px;">
+                <button type="submit" class="btn btn-sm btn-danger">Remover Documento</button>
+            </form>
+        </div>
+        <div th:unless="${temDocumento}" class="alert alert-warning">
+            Nenhum documento carregado. O assistente usara respostas genericas ou instruira o carregamento de um arquivo.
+        </div>
+    </div>
+
+    <!-- Upload de arquivo -->
+    <div class="upload-container">
+        <form th:action="@{/chat/documento/upload}" method="post" enctype="multipart/form-data" class="form-upload">
+            <label><strong>Carregar Arquivo (.txt / .md):</strong></label>
+            <input type="file" name="arquivo" accept=".txt,.md" required />
+            <button type="submit" class="btn btn-primary">Carregar Documento</button>
+        </form>
+    </div>
+
+    <!-- Alternar Estrategia e Metricas (Observer) -->
+    <div class="painel-rodape">
+        <form th:action="@{/chat/estrategia}" method="post" class="form-estrategia">
+            <label>Alternar Strategy:</label>
+            <select name="estrategia">
+                <option th:each="est : ${estrategias}"
+                        th:value="${est}"
+                        th:text="${est}"
+                        th:selected="${est == estrategiaAtual}"></option>
+            </select>
+            <button type="submit" class="btn btn-secondary btn-sm">Trocar</button>
+        </form>
+
+        <div class="metricas-observer" th:if="${metricas != null}">
+            <small>
+                <strong>Telemetria (Observer):</strong>
+                <span th:text="${metricas.totalRespostas}">0</span> respostas geradas |
+                Media: <span th:text="${#numbers.formatDecimal(metricas.mediaCaracteres, 1, 1)}">0.0</span> chars/resposta
+            </small>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
