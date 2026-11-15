@@ -23,57 +23,57 @@ flowchart TD
     end
 
     subgraph Controller ["Camada Web MVC"]
-        ChatController["ChatController\n(Invoker do Command)"]
+        ChatController["ChatController<br/>(Invoker do Command)"]
     end
 
     subgraph Commands ["Padrão Command"]
-        Comando["<<interface>>\nComando"]
+        Comando["&laquo;interface&raquo;<br/>Comando"]
         CmdPergunta["EnviarPerguntaCommand"]
         CmdDoc["CarregarDocumentoCommand"]
         CmdLimpar["LimparDocumentoCommand"]
         CmdEstrategia["AlternarEstrategiaCommand"]
-        Comando <|.. CmdPergunta
-        Comando <|.. CmdDoc
-        Comando <|.. CmdLimpar
-        Comando <|.. CmdEstrategia
+        CmdPergunta -.-> Comando
+        CmdDoc -.-> Comando
+        CmdLimpar -.-> Comando
+        CmdEstrategia -.-> Comando
     end
 
     subgraph Service ["Camada de Serviços & Orquestração"]
-        ChatService["ChatService\n(Context & Subject)"]
-        ConhecimentoService["ConhecimentoService\n(Gestão de RAG)"]
+        ChatService["ChatService<br/>(Context & Subject)"]
+        ConhecimentoService["ConhecimentoService<br/>(Gestão de RAG)"]
     end
 
     subgraph StatePattern ["Padrão State (Ciclo de Vida)"]
         SessaoChat["SessaoChat (Context)"]
-        EstadoSessao["<<interface>>\nEstadoSessao"]
+        EstadoSessao["&laquo;interface&raquo;<br/>EstadoSessao"]
         AguardandoState["AguardandoPerguntaState"]
         ProcessandoState["ProcessandoState"]
         RespondidoState["RespondidoState"]
         SessaoChat --> EstadoSessao
-        EstadoSessao <|.. AguardandoState
-        EstadoSessao <|.. ProcessandoState
-        EstadoSessao <|.. RespondidoState
+        AguardandoState -.-> EstadoSessao
+        ProcessandoState -.-> EstadoSessao
+        RespondidoState -.-> EstadoSessao
     end
 
     subgraph StrategyPattern ["Padrão Strategy (Geração de Resposta)"]
-        EstrategiaResposta["<<interface>>\nEstrategiaResposta"]
-        SpringAiStrat["SpringAiKnowledgeStrategy\n(@Primary)"]
-        EcoStrat["EcoStrategy\n(Mock / Dev)"]
-        EstrategiaResposta <|.. SpringAiStrat
-        EstrategiaResposta <|.. EcoStrat
+        EstrategiaResposta["&laquo;interface&raquo;<br/>EstrategiaResposta"]
+        SpringAiStrat["SpringAiKnowledgeStrategy<br/>(@Primary)"]
+        EcoStrat["EcoStrategy<br/>(Mock / Dev)"]
+        SpringAiStrat -.-> EstrategiaResposta
+        EcoStrat -.-> EstrategiaResposta
     end
 
     subgraph ObserverPattern ["Padrão Observer (Eventos)"]
-        ObservadorResposta["<<interface>>\nObservadorResposta"]
+        ObservadorResposta["&laquo;interface&raquo;<br/>ObservadorResposta"]
         LogObs["LogObservador"]
         MetricasObs["MetricasObservador"]
-        ObservadorResposta <|.. LogObs
-        ObservadorResposta <|.. MetricasObs
+        LogObs -.-> ObservadorResposta
+        MetricasObs -.-> ObservadorResposta
     end
 
     subgraph LLM ["Spring AI + Modelo Aberto"]
         ChatClient["ChatClient"]
-        OllamaLocal["Ollama Server (Local:11434)\nModelo: llama3.1 / llama3.2"]
+        OllamaLocal["Ollama Server (Local:11434)<br/>Modelo: llama3.1 / llama3.2"]
         ChatClient --> OllamaLocal
     end
 
