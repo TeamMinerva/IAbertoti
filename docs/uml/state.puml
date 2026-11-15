@@ -1,0 +1,98 @@
+@startuml StatePattern
+title Padrão State - Gerenciamento do Ciclo de Vida da Sessão do Chat
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam roundcorner 10
+skinparam shadowing false
+
+package "br.com.minerva.iabertoti.state" {
+    interface EstadoSessao <<interface>> {
+        + processarPergunta(sessao: SessaoChat, pergunta: String): void
+        + finalizarResposta(sessao: SessaoChat, resposta: Mensagem): void
+        + getNome(): String
+    }
+
+    class AguardandoPerguntaState {
+        + processarPergunta(sessao: SessaoChat, pergunta: String): void
+        + finalizarResposta(sessao: SessaoChat, resposta: Mensagem): void
+        + getNome(): String
+    }
+
+    class ProcessandoState {
+        + processarPergunta(sessao: SessaoChat, pergunta: String): void
+        + finalizarResposta(sessao: SessaoChat, resposta: Mensagem): void
+        + getNome(): String
+    }
+
+    class RespondidoState {
+        + processarPergunta(sessao: SessaoChat, pergunta: String): void
+        + finalizarResposta(sessao: SessaoChat, resposta: Mensagem): void
+        + getNome(): String
+    }
+}
+
+package "br.com.minerva.iabertoti.model" {
+    class SessaoChat {
+        - estadoAtual: EstadoSessao
+        - mensagens: List<Mensagem>
+        + SessaoChat()
+        + processarPergunta(pergunta: String): void
+        + finalizarResposta(resposta: Mensagem): void
+        + mudarEstado(novoEstado: EstadoSessao): void
+        + getEstadoAtual(): EstadoSessao
+        + adicionarMensagem(mensagem: Mensagem): void
+        + getMensagens(): List<Mensagem>
+    }
+
+    class Mensagem <<record>> {
+        + autor: Autor
+        + conteudo: String
+    }
+
+    enum Autor <<enum>> {
+        USUARIO
+        ASSISTENTE
+    }
+}
+
+SessaoChat o--> "1" EstadoSessao : estadoAtual
+SessaoChat *--> "*" Mensagem : mensagens
+Mensagem --> Autor
+
+EstadoSessao <|.. AguardandoPerguntaState
+EstadoSessao <|.. ProcessandoState
+EstadoSessao <|.. RespondidoState
+
+AguardandoPerguntaState ..> ProcessandoState : transiciona para
+ProcessandoState ..> RespondidoState : transiciona para
+RespondidoState ..> AguardandoPerguntaState : transiciona para
+
+@enduml
+
+@startuml StateLifecycle
+title Diagrama de Transição de Estados (State Machine)
+
+[*] --> AguardandoPerguntaState : Inicialização da Sessão
+
+state AguardandoPerguntaState {
+    AguardandoPerguntaState : Aceita pergunta do usuário
+    AguardandoPerguntaState : Adiciona pergunta à lista
+}
+
+state ProcessandoState {
+    ProcessandoState : IA formulando resposta
+    ProcessandoState : Bloqueia novas perguntas
+}
+
+state RespondidoState {
+    RespondidoState : Resposta entregue e exibida
+    RespondidoState : Pronto para novo ciclo
+}
+
+AguardandoPerguntaState --> ProcessandoState : processarPergunta(pergunta)
+ProcessandoState --> ProcessandoState : processarPergunta() [ignorado / ocupado]
+ProcessandoState --> RespondidoState : finalizarResposta(resposta)
+RespondidoState --> AguardandoPerguntaState : processarPergunta(novaPergunta)
+
+@enduml

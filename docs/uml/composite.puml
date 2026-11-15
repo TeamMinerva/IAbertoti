@@ -1,0 +1,59 @@
+@startuml CompositePattern
+title Padrão Composite - Composição da Interface Gráfica (GUI Thymeleaf)
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam roundcorner 10
+skinparam shadowing false
+
+package "GUI / Thymeleaf Component Tree" {
+    abstract class ComponenteUI <<Component>> {
+        + {abstract} render(): HTML
+    }
+
+    class ChatPage <<Composite Root>> {
+        + render(): HTML
+    }
+
+    class PainelConhecimentoFragment <<Composite Branch>> {
+        + render(): HTML
+    }
+
+    class ListaMensagensFragment <<Composite Branch>> {
+        + render(): HTML
+    }
+
+    class MensagemFragment <<Leaf>> {
+        - autor: Autor
+        - conteudo: String
+        + render(): HTML
+    }
+
+    class FormPerguntaFragment <<Leaf>> {
+        - acao: String
+        + render(): HTML
+    }
+}
+
+ComponenteUI <|-- ChatPage
+ComponenteUI <|-- PainelConhecimentoFragment
+ComponenteUI <|-- ListaMensagensFragment
+ComponenteUI <|-- MensagemFragment
+ComponenteUI <|-- FormPerguntaFragment
+
+ChatPage *--> "1" PainelConhecimentoFragment : compõe
+ChatPage *--> "1" ListaMensagensFragment : compõe
+ChatPage *--> "1" FormPerguntaFragment : compõe
+
+ListaMensagensFragment *--> "*" MensagemFragment : compõe N mensagens
+
+note right of ChatPage
+  <b>Padrão Composite na Web:</b>
+  A página 'chat.html' compõe fragmentos
+  containers (Painel e Lista de Mensagens)
+  que por sua vez contêm elementos individuais
+  folhas (cada fragmento 'mensagem.html'), tratando
+  componentes simples e compostos de forma uniforme.
+end note
+
+@enduml

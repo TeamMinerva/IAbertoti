@@ -1,0 +1,57 @@
+@startuml StrategyPattern
+title Padrão Strategy - Formas Intercambiáveis de Geração de Resposta
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam roundcorner 10
+skinparam shadowing false
+
+package "br.com.minerva.iabertoti.strategy" {
+    interface EstrategiaResposta <<interface>> {
+        + gerarResposta(pergunta: String): String
+    }
+
+    class SpringAiKnowledgeStrategy <<@Primary>> {
+        - chatClient: ChatClient
+        - conhecimentoService: ConhecimentoService
+        + SpringAiKnowledgeStrategy(chatClient: ChatClient, conhecimentoService: ConhecimentoService)
+        + gerarResposta(pergunta: String): String
+    }
+
+    class EcoStrategy {
+        + gerarResposta(pergunta: String): String
+    }
+}
+
+package "br.com.minerva.iabertoti.service" {
+    class ChatService <<Context>> {
+        - estrategiaAtual: EstrategiaResposta
+        - estrategiasDisponiveis: Map<String, EstrategiaResposta>
+        + ChatService(estrategiaPadrao: EstrategiaResposta, ...)
+        + selecionarEstrategia(nomeEstrategia: String): void
+        + enviarPergunta(pergunta: String): void
+    }
+
+    class ConhecimentoService {
+        + montarPrompt(pergunta: String): Prompt
+        + temConhecimentoCarregado(): boolean
+        + obterConteudo(): String
+    }
+}
+
+package "Spring AI Framework / Ollama" {
+    class ChatClient {
+        + prompt(prompt: Prompt): ChatClientRequestSpec
+    }
+}
+
+EstrategiaResposta <|.. SpringAiKnowledgeStrategy
+EstrategiaResposta <|.. EcoStrategy
+
+ChatService o--> "1" EstrategiaResposta : estrategiaAtual
+ChatService o--> "*" EstrategiaResposta : estrategiasDisponiveis
+
+SpringAiKnowledgeStrategy o--> "1" ConhecimentoService : consulta contexto
+SpringAiKnowledgeStrategy o--> "1" ChatClient : invoca LLM local
+
+@enduml
