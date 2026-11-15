@@ -3,17 +3,14 @@ package br.com.minerva.iabertoti.strategy;
 import org.springframework.stereotype.Component;
 
 /**
- * Implementação mínima do Strategy: não usa nenhum modelo de IA de verdade
- * ainda, só devolve uma resposta simples a partir da pergunta. Serve pra
- * provar que a arquitetura funciona (Command -> State -> Strategy ->
- * Observer) sem depender de infraestrutura externa (Ollama) na entrega.
+ * Implementacao simulada (mock) do Strategy: util para testes unitarios,
+ * apresentacoes e desenvolvimento offline sem depender da inicializacao do Ollama.
  */
-@Component
+@Component("ecoStrategy")
 public class EcoStrategy implements EstrategiaResposta {
 
     @Override
     public String gerarResposta(String pergunta) {
-        return "Você perguntou: \"" + pergunta + "\". Ainda não tenho um modelo de IA plugado, "
-                + "mas a arquitetura já está pronta pra receber um.";
+        return "Voce perguntou: \"" + pergunta + "\". [Resposta gerada pela EcoStrategy / Mock de Desenvolvimento]";
     }
 }
