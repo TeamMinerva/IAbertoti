@@ -206,41 +206,49 @@ Abra seu navegador em:
             <th>Membro</th>
             <th>GitHub</th>
             <th>LinkedIn</th>
-        </tr>
-        <tr>
-            <td>Guilherme Rosa</td>
-            <td><a href="https://github.com/GuilhermeMRosa"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
-            <td><a href="https://www.linkedin.com/in/guilherme-rosa-518047387/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
-        </tr>
-        <tr>
-            <td>Isaura Batista</td>
-            <td><a href="https://github.com/sunrhse"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
-            <td><a href="https://www.linkedin.com/in/isaura-de-lourdes-0561742aa"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
-        </tr>
-        <tr>
-            <td>Leticia Furtado</td>
-            <td><a href="https://github.com/LeticiaG24"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
-            <td><a href="https://www.linkedin.com/in/letícia-furtado-053b6033a"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
-        </tr>
-        <tr>
-            <td>Fernanda Pereira</td>
-            <td><a href="https://github.com/Fernanda192028"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
-            <td><a href="https://www.linkedin.com/in/fernanda-pereira-252076362"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
-        </tr>
-        <tr>
-            <td>Wendy Mininel</td>
-            <td><a href="https://github.com/WendyMininel"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
-            <td><a href="https://www.linkedin.com/in/wendy-mininel-279300353"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
-        </tr>
-        <tr>
-            <td>Gustavo Garcia</td>
-            <td><a href="https://github.com/gustav0-gg"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
-            <td><a href="https://www.linkedin.com/in/ggg-"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
+            <th>Repositório bertoti</th>
         </tr>
         <tr>
             <td>Caio César</td>
             <td><a href="https://github.com/JkDeltaz"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
             <td><a href="https://www.linkedin.com/in/caio-c%C3%A9sar-santos-79976636a/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
+            <td><a href="https://github.com/JkDeltaz/bertoti"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+        </tr>
+        <tr>
+            <td>Fernanda Pereira</td>
+            <td><a href="https://github.com/Fernanda192028"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/fernanda-pereira-252076362"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
+            <td><a href="https://github.com/Fernanda192028/bertoti"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+        </tr>
+        <tr>
+            <td>Guilherme Rosa</td>
+            <td><a href="https://github.com/GuilhermeMRosa"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/guilherme-rosa-518047387/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
+            <td><a href="https://github.com/GuilhermeMRosa/bertoti"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+        </tr>
+        <tr>
+            <td>Gustavo Garcia</td>
+            <td><a href="https://github.com/gustav0-gg"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/ggg-"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
+            <td><a href="https://github.com/gustav0-gg/bertoti"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+        </tr>
+        <tr>
+            <td>Isaura Batista</td>
+            <td><a href="https://github.com/sunrhse"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/isaura-de-lourdes-0561742aa"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
+            <td><a href="https://github.com/sunrhse/bertoti"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+        </tr>
+        <tr>
+            <td>Leticia Furtado</td>
+            <td><a href="https://github.com/LeticiaG24"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/letícia-furtado-053b6033a"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
+            <td><a href="https://github.com/LeticiaG24/bertoti"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+        </tr>
+        <tr>
+            <td>Wendy Mininel</td>
+            <td><a href="https://github.com/WendyMininel"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
+            <td><a href="https://www.linkedin.com/in/wendy-mininel-279300353"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a></td>
+            <td><a href="https://github.com/WendyMininel/bertoti"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a></td>
         </tr>
     </table>
 </div>
