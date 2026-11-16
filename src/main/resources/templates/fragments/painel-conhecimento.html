@@ -3,60 +3,66 @@
 <body>
 
 <!-- Composite: "galho" da arvore de componentes dedicado a gestao do conhecimento e configuracoes da sessao -->
-<div th:fragment="painel(documento, temDocumento, estrategiaAtual, estrategias, metricas, estadoSessao)" class="painel-conhecimento card">
-    <div class="card-header">
-        <h3>Base de Conhecimento (Knowledge Assistant)</h3>
-        <div class="badges">
-            <span class="badge badge-estado" th:text="'Estado: ' + ${estadoSessao}">Estado: Aguardando Pergunta</span>
-            <span class="badge badge-estrategia" th:text="'Estrategia: ' + ${estrategiaAtual}">Estrategia: SpringAiKnowledgeStrategy</span>
-        </div>
-    </div>
+<div th:fragment="painel(documento, temDocumento, estrategiaAtual, estrategias, metricas, estadoSessao)" class="painel-conhecimento controles-wrapper" style="display: contents;">
 
-    <!-- Status do documento -->
-    <div class="documento-status">
-        <div th:if="${temDocumento}" class="alert alert-success">
-            <strong>Documento Ativo:</strong>
-            <span th:text="${documento.nome}">manual.txt</span>
-            (<span th:text="${documento.tamanhoBytes}">1024</span> bytes)
-            - Carregado em <span th:text="${#temporals.format(documento.dataCarregamento, 'dd/MM/yyyy HH:mm:ss')}">data</span>
-            <form th:action="@{/chat/documento/limpar}" method="post" style="display:inline; margin-left: 10px;">
-                <button type="submit" class="btn btn-sm btn-danger">Remover Documento</button>
+    <!-- Status do documento (cartao no estilo "word card") -->
+    <section class="card-palavra" aria-label="Documento da base de conhecimento">
+        <div class="card-palavra-topo">
+            <div class="card-palavra-linha">
+                <span class="rotulo">documento</span>
+                <span class="icone-circulo" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V9h5.5L13 3.5zM8 13h8v1.6H8V13zm0 3.4h8V18H8v-1.6z"/></svg>
+                </span>
+            </div>
+            <p th:if="${temDocumento}" class="palavra" th:text="${documento.nome}">manual.txt</p>
+            <p th:unless="${temDocumento}" class="palavra vazia">Nenhum</p>
+        </div>
+        <div class="card-palavra-uso">
+            <h4>Base de conhecimento</h4>
+            <p th:if="${temDocumento}">
+                <span th:text="${documento.tamanhoBytes}">1024</span> bytes · carregado em
+                <span th:text="${#temporals.format(documento.dataCarregamento, 'dd/MM/yyyy HH:mm:ss')}">data</span>
+            </p>
+            <p th:unless="${temDocumento}">
+                Nenhum documento carregado. O assistente usara respostas genericas ou instruira o carregamento de um arquivo.
+            </p>
+            <form th:if="${temDocumento}" th:action="@{/chat/documento/limpar}" method="post">
+                <button type="submit" class="btn btn-sm">Remover documento</button>
             </form>
         </div>
-        <div th:unless="${temDocumento}" class="alert alert-warning">
-            Nenhum documento carregado. O assistente usara respostas genericas ou instruira o carregamento de um arquivo.
-        </div>
-    </div>
+    </section>
 
-    <!-- Upload de arquivo -->
-    <div class="upload-container">
+    <div class="controles">
+        <!-- Upload de arquivo -->
         <form th:action="@{/chat/documento/upload}" method="post" enctype="multipart/form-data" class="form-upload">
-            <label><strong>Carregar Arquivo (.txt / .md):</strong></label>
-            <input type="file" name="arquivo" accept=".txt,.md" required />
-            <button type="submit" class="btn btn-primary">Carregar Documento</button>
-        </form>
-    </div>
+            <label class="arquivo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+                <span class="arquivo-texto">Escolha um arquivo <strong>.txt</strong> ou <strong>.md</strong></span>
+                <input type="file" name="arquivo" accept=".txt,.md" required aria-label="Carregar arquivo .txt ou .md" />
+            </label>
 
-    <!-- Alternar Estrategia e Metricas (Observer) -->
-    <div class="painel-rodape">
-        <form th:action="@{/chat/estrategia}" method="post" class="form-estrategia">
-            <label>Alternar Strategy:</label>
-            <select name="estrategia">
+            <!-- Alternar Estrategia: o select usa form="form-estrategia" para ficar visualmente ao lado -->
+            <span class="rotulo-campo">Strategy</span>
+            <select name="estrategia" class="select" form="form-estrategia" aria-label="Alternar Strategy">
                 <option th:each="est : ${estrategias}"
                         th:value="${est}"
                         th:text="${est}"
                         th:selected="${est == estrategiaAtual}"></option>
             </select>
-            <button type="submit" class="btn btn-secondary btn-sm">Trocar</button>
+
+            <div class="linha-botoes">
+                <button type="submit" class="btn" form="form-estrategia">
+                    Trocar
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l3 3-3 3"/><path d="M4 11V9a4 4 0 0 1 4-4h12"/><path d="M7 22l-3-3 3-3"/><path d="M20 13v2a4 4 0 0 1-4 4H4"/></svg>
+                </button>
+                <button type="submit" class="btn btn-rosa">
+                    Carregar
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2 10h4v11H2zM8 21h9.3a2 2 0 0 0 2-1.6l1.6-7.5A2 2 0 0 0 19 9.5h-5.3l.8-3.9A2 2 0 0 0 12.6 3L8 9v12z"/></svg>
+                </button>
+            </div>
         </form>
 
-        <div class="metricas-observer" th:if="${metricas != null}">
-            <small>
-                <strong>Telemetria (Observer):</strong>
-                <span th:text="${metricas.totalRespostas}">0</span> respostas geradas |
-                Media: <span th:text="${#numbers.formatDecimal(metricas.mediaCaracteres, 1, 1)}">0.0</span> chars/resposta
-            </small>
-        </div>
+        <form id="form-estrategia" th:action="@{/chat/estrategia}" method="post" class="form-estrategia"></form>
     </div>
 </div>
 

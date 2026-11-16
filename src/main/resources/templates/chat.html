@@ -1,239 +1,541 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IAbertoti - Knowledge Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #1e293b;
-            --muted: #64748b;
-            --border: #e2e8f0;
-            --user-msg: #e0f2fe;
-            --ai-msg: #ffffff;
-            --success: #16a34a;
-            --warning: #ca8a04;
-            --danger: #dc2626;
+            --ink: #1c1c1e;
+            --ink-soft: #3a3a3c;
+            --slate: #5b6b7a;
+            --surface: #ffffff;
+            --canvas: #ebe9ec;
+            --page: #eef0f4;
+            --pink: #f9b3d5;
+            --pink-strong: #f598c6;
+            --yellow: #fbf06a;
+            --yellow-strong: #f5e63a;
+            --dark: #1f1f1f;
+            --radius-lg: 32px;
+            --radius-md: 22px;
+            --radius-sm: 16px;
+            --shadow-card: 0 18px 40px -18px rgba(28, 28, 30, 0.22), 0 2px 6px rgba(28, 28, 30, 0.05);
+            --font: 'Inter Tight', 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
+
+        * { box-sizing: border-box; }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            max-width: 860px;
-            margin: 30px auto;
-            padding: 0 16px;
+            margin: 0;
+            min-height: 100vh;
+            font-family: var(--font);
+            background: var(--page);
+            color: var(--ink);
             line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            padding: 32px;
         }
 
-        header {
+        .app {
+            max-width: 1320px;
+            min-height: calc(100vh - 64px);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(380px, 460px) 1fr;
+            gap: 24px;
+        }
+
+        /* ---------- Coluna esquerda: hero com gradiente ---------- */
+        .lateral {
+            border-radius: var(--radius-lg);
+            padding: 40px 32px 32px;
+            background:
+                radial-gradient(120% 60% at 0% 0%, #fbb0d4 0%, rgba(251, 176, 212, 0) 60%),
+                radial-gradient(110% 60% at 100% 8%, #fdf36a 0%, rgba(253, 243, 106, 0) 65%),
+                linear-gradient(180deg, #fbe7c8 0%, var(--canvas) 50%);
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--border);
+            flex-direction: column;
+            gap: 24px;
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 1.6rem;
-            color: #0f172a;
-        }
-
-        .subtitle {
-            font-size: 0.9rem;
-            color: var(--muted);
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .card-header {
+        .hero {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
+            align-items: flex-start;
+            gap: 16px;
         }
 
-        .card-header h3 {
+        .hero h1 {
             margin: 0;
-            font-size: 1.1rem;
-        }
-
-        .badges {
-            display: flex;
-            gap: 8px;
-        }
-
-        .badge {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.75rem;
+            font-size: clamp(3rem, 4.4vw, 4.2rem);
+            line-height: 0.95;
+            letter-spacing: -0.055em;
             font-weight: 600;
+            background: linear-gradient(100deg, var(--ink) 45%, #6d6a4a 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        .badge-estado {
-            background: #e2e8f0;
-            color: #334155;
+        .hero .subtitle {
+            display: block;
+            margin-top: 14px;
+            font-size: 0.92rem;
+            color: var(--slate);
+            max-width: 32ch;
         }
 
-        .badge-estrategia {
-            background: #dbeafe;
-            color: #1e40af;
+        .avatar {
+            flex: none;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            background: var(--surface);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.7), var(--shadow-card);
         }
 
+        /* ---------- Alertas ---------- */
         .alert {
-            padding: 10px 14px;
-            border-radius: 6px;
-            margin-bottom: 12px;
-            font-size: 0.88rem;
-        }
-
-        .alert-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
-        .alert-warning { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
-        .alert-danger { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-
-        .form-upload {
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            background: var(--surface);
+            box-shadow: var(--shadow-card);
             display: flex;
             align-items: center;
             gap: 10px;
-            margin: 12px 0;
         }
 
-        .painel-rodape {
+        .alert::before {
+            content: "";
+            flex: none;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .alert-success::before { background: #34c759; }
+        .alert-danger::before { background: #ff3b30; }
+
+        /* ---------- Cartao do documento (estilo "word card") ---------- */
+        .card-palavra {
+            border-radius: var(--radius-md);
+            background: #f6f5f7;
+            box-shadow: var(--shadow-card);
+        }
+
+        .card-palavra-topo {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 22px 24px 26px;
+            box-shadow: 0 10px 24px -14px rgba(28, 28, 30, 0.25);
+        }
+
+        .card-palavra-linha {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 14px;
-            padding-top: 12px;
-            border-top: 1px dashed var(--border);
         }
 
-        .form-estrategia {
+        .rotulo { color: var(--slate); }
+
+        .icone-circulo {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #eef0f4;
+            display: grid;
+            place-items: center;
+            color: var(--slate);
+        }
+
+        .palavra {
+            margin: 14px 0 0;
+            font-size: clamp(2.2rem, 3.2vw, 3rem);
+            line-height: 1;
+            letter-spacing: -0.055em;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .palavra.vazia { color: #b8b8bd; }
+
+        .card-palavra-uso { padding: 16px 24px 22px; }
+
+        .card-palavra-uso h4 {
+            margin: 0 0 6px;
+            font-size: 1rem;
+            font-style: italic;
+            font-weight: 500;
+            color: var(--slate);
+        }
+
+        .card-palavra-uso p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--slate);
+        }
+
+        .card-palavra-uso form { margin-top: 14px; }
+
+        /* ---------- Botoes ---------- */
+        .btn {
+            font-family: inherit;
+            font-size: 0.98rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 14px 22px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--ink);
+            background: var(--surface);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+        }
+
+        .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-card); }
+        .btn:active { transform: none; }
+        .btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+        .btn-rosa { background: var(--pink); }
+        .btn-rosa:hover { background: var(--pink-strong); }
+        .btn-amarelo { background: var(--yellow); }
+        .btn-amarelo:hover { background: var(--yellow-strong); }
+        .btn-sm { padding: 8px 14px; font-size: 0.85rem; border-radius: 12px; background: #eef0f4; }
+
+        /* ---------- Painel de controles ---------- */
+        .controles {
+            display: grid;
+            gap: 14px;
+            margin-top: auto;
+        }
+
+        .form-upload { display: grid; gap: 14px; }
+
+        .arquivo {
+            position: relative;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-        }
-
-        .btn {
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
+            gap: 12px;
+            background: rgba(255,255,255,0.6);
+            border: 1.5px dashed #c9c6cc;
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
             cursor: pointer;
-            font-weight: 500;
-            transition: background 0.2s;
+            color: var(--slate);
+            transition: border-color 0.15s, background 0.15s;
         }
 
-        .btn:hover { background: var(--primary-hover); }
-        .btn-secondary { background: #64748b; }
-        .btn-secondary:hover { background: #475569; }
-        .btn-danger { background: var(--danger); }
-        .btn-danger:hover { background: #b91c1c; }
-        .btn-sm { padding: 4px 10px; font-size: 0.78rem; }
+        .arquivo:hover, .arquivo:focus-within { border-color: var(--ink-soft); background: rgba(255,255,255,0.9); }
+
+        .arquivo input[type=file] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .arquivo-texto { font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .arquivo-texto strong { color: var(--ink); font-weight: 600; }
+
+        .linha-botoes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .linha-botoes .btn { width: 100%; }
+
+        .form-estrategia { display: contents; }
+
+        .select {
+            width: 100%;
+            appearance: none;
+            font-family: inherit;
+            font-size: 0.98rem;
+            color: var(--ink);
+            background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231c1c1e' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 16px center;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 14px 40px 14px 18px;
+            cursor: pointer;
+        }
+
+        .select:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+        .rotulo-campo {
+            font-size: 0.85rem;
+            font-style: italic;
+            font-weight: 500;
+            color: var(--slate);
+            margin-bottom: -6px;
+        }
+
+        /* ---------- Coluna direita: chat ---------- */
+        .principal {
+            display: flex;
+            flex-direction: column;
+            border-radius: var(--radius-lg);
+            background: var(--dark);
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .chat-corpo {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--canvas);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            min-height: 0;
+        }
+
+        .chat-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 32px 6px;
+        }
+
+        .chat-topo h2 {
+            margin: 0;
+            font-size: 1.6rem;
+            letter-spacing: -0.04em;
+            font-weight: 600;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: var(--surface);
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--ink-soft);
+        }
+
+        .chip::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--pink-strong);
+        }
 
         #chat-container {
-            min-height: 250px;
-            max-height: 480px;
+            flex: 1;
             overflow-y: auto;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: #f1f5f9;
-            padding: 16px;
-            margin-bottom: 16px;
+            padding: 16px 32px 28px;
+            min-height: 320px;
+            max-height: calc(100vh - 64px - 200px);
+            scrollbar-width: none;
+        }
+
+        #chat-container::-webkit-scrollbar { display: none; }
+
+        .vazio {
+            height: 100%;
+            min-height: 300px;
+            display: grid;
+            place-content: center;
+            text-align: center;
+            color: var(--slate);
+        }
+
+        .vazio strong {
+            display: block;
+            font-size: 2.6rem;
+            letter-spacing: -0.05em;
+            font-weight: 600;
+            color: #c3c1c6;
+            line-height: 1.05;
+            margin-bottom: 10px;
         }
 
         .mensagem {
-            padding: 10px 14px;
-            margin: 10px 0;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-            border: 1px solid var(--border);
+            max-width: 78%;
+            margin: 14px 0;
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-card);
+            animation: entrar 0.25s ease-out;
+        }
+
+        @keyframes entrar {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: none; }
         }
 
         .mensagem-usuario {
-            background: var(--user-msg);
-            margin-left: 40px;
-            border-color: #bae6fd;
+            margin-left: auto;
+            background: var(--pink);
+            border-bottom-right-radius: 8px;
         }
 
         .mensagem-assistente {
-            background: var(--ai-msg);
-            margin-right: 40px;
+            background: var(--surface);
+            border-bottom-left-radius: 8px;
         }
 
         .mensagem-autor {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: var(--muted);
+            font-size: 0.85rem;
+            font-style: italic;
+            font-weight: 500;
+            color: var(--slate);
             margin-bottom: 4px;
-            letter-spacing: 0.5px;
         }
+
+        .mensagem-usuario .mensagem-autor { color: #7a4560; }
 
         .mensagem-conteudo {
             white-space: pre-wrap;
-            word-wrap: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        /* Barra escura (estilo "36/58") */
+        .barra-escura {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 32px;
+            color: #9a9a9e;
+            font-size: 0.85rem;
+        }
+
+        .barra-escura strong { color: #e5e5e7; font-weight: 500; }
+
+        .rodape-pergunta {
+            background: var(--canvas);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            padding: 22px 32px 26px;
         }
 
         .form-pergunta {
             display: flex;
-            gap: 10px;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface);
+            border-radius: 18px;
+            padding: 8px 8px 8px 18px;
+            transition: box-shadow 0.15s;
         }
+
+        .form-pergunta:focus-within { box-shadow: 0 0 0 2px var(--ink); }
+        .form-pergunta svg { flex: none; color: #8e8e93; }
 
         .form-pergunta input[type=text] {
             flex: 1;
-            padding: 12px 14px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.95rem;
+            min-width: 0;
+            border: none;
             outline: none;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--ink);
+            background: transparent;
+            padding: 10px 0;
         }
 
-        .form-pergunta input[type=text]:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        .form-pergunta input::placeholder { color: #8e8e93; }
+
+        @media (max-width: 960px) {
+            body { padding: 16px; }
+            .app { grid-template-columns: 1fr; }
+            #chat-container { max-height: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <div>
-        <h1>IAbertoti - Knowledge Assistant</h1>
-        <span class="subtitle">Engenharia de Software III - Padrões State, Command, Strategy, Observer e Composite</span>
-    </div>
-</header>
+<div class="app">
 
-<!-- Notificacoes flash de feedback -->
-<div th:if="${sucesso}" class="alert alert-success" th:text="${sucesso}"></div>
-<div th:if="${erro}" class="alert alert-danger" th:text="${erro}"></div>
+    <!-- Coluna esquerda: identidade, feedback e Composite do painel de conhecimento -->
+    <aside class="lateral">
+        <header class="hero">
+            <div>
+                <h1>Knowledge<br>Assistant</h1>
+                <span class="subtitle">IAbertoti · Engenharia de Software III — State, Command, Strategy, Observer e Composite</span>
+            </div>
+            <div class="avatar" aria-hidden="true">IA</div>
+        </header>
 
-<!-- Composite: fragmento de Gestao de Conhecimento e Configuracao (Galho) -->
-<div th:replace="~{fragments/painel-conhecimento :: painel(${documento}, ${temDocumento}, ${estrategiaAtual}, ${estrategias}, ${metricas}, ${estadoSessao})}"></div>
+        <!-- Notificacoes flash de feedback -->
+        <div th:if="${sucesso}" class="alert alert-success" role="status" th:text="${sucesso}"></div>
+        <div th:if="${erro}" class="alert alert-danger" role="alert" th:text="${erro}"></div>
 
-<!-- Composite: fragmento de Lista de Mensagens (Galho) -->
-<div id="chat-container">
-    <div th:replace="~{fragments/lista-mensagens :: lista(${mensagens})}"></div>
+        <!-- Composite: fragmento de Gestao de Conhecimento e Configuracao (Galho) -->
+        <div th:replace="~{fragments/painel-conhecimento :: painel(${documento}, ${temDocumento}, ${estrategiaAtual}, ${estrategias}, ${metricas}, ${estadoSessao})}"></div>
+    </aside>
+
+    <!-- Coluna direita: conversa -->
+    <main class="principal">
+        <div class="chat-corpo">
+            <div class="chat-topo">
+                <h2>Conversa</h2>
+                <span class="chip" th:text="${estadoSessao}">Aguardando Pergunta</span>
+            </div>
+
+            <!-- Composite: fragmento de Lista de Mensagens (Galho) -->
+            <div id="chat-container">
+                <div th:replace="~{fragments/lista-mensagens :: lista(${mensagens})}"></div>
+            </div>
+        </div>
+
+        <!-- Telemetria (Observer) -->
+        <div class="barra-escura">
+            <span th:text="${estrategiaAtual}">SpringAiKnowledgeStrategy</span>
+            <span th:if="${metricas != null}">
+                <strong th:text="${metricas.totalRespostas}">0</strong> respostas ·
+                <strong th:text="${#numbers.formatDecimal(metricas.mediaCaracteres, 1, 1)}">0,0</strong> chars/resposta
+            </span>
+        </div>
+
+        <!-- Formulario de envio da pergunta (Disparador do EnviarPerguntaCommand) -->
+        <div class="rodape-pergunta">
+            <form th:action="@{/chat}" method="post" class="form-pergunta">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3h14a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-6l-5 4v-4H5a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3zm6.2 11.6v1.6h1.6v-1.6h-1.6zM12 5.6c-1.8 0-3.1 1.1-3.2 2.8h1.6c.1-.8.7-1.3 1.6-1.3.9 0 1.5.5 1.5 1.2 0 .6-.3.9-1.1 1.4-.9.6-1.3 1.2-1.2 2.3v.5h1.6v-.4c0-.7.2-1 1.1-1.5.9-.6 1.3-1.2 1.3-2.2 0-1.6-1.4-2.8-3.2-2.8z"/></svg>
+                <input type="text" name="pergunta" placeholder="Pergunte algo sobre o documento carregado..." aria-label="Sua pergunta" required autofocus />
+                <button type="submit" class="btn btn-amarelo">Perguntar</button>
+            </form>
+        </div>
+    </main>
+
 </div>
 
-<!-- Formulario de envio da pergunta (Disparador do EnviarPerguntaCommand) -->
-<form th:action="@{/chat}" method="post" class="form-pergunta">
-    <input type="text" name="pergunta" placeholder="Faca uma pergunta sobre o documento carregado..." required autofocus />
-    <button type="submit" class="btn">Enviar Pergunta</button>
-</form>
+<script>
+    // Mantem a conversa rolada ate a mensagem mais recente
+    const chat = document.getElementById('chat-container');
+    if (chat) chat.scrollTop = chat.scrollHeight;
+
+    // Mostra o nome do arquivo escolhido no campo de upload
+    const arquivo = document.querySelector('.arquivo input[type=file]');
+    const arquivoTexto = document.querySelector('.arquivo-texto');
+    if (arquivo && arquivoTexto) {
+        arquivo.addEventListener('change', () => {
+            if (!arquivo.files.length) return;
+            arquivoTexto.replaceChildren(document.createElement('strong'));
+            arquivoTexto.firstChild.textContent = arquivo.files[0].name;
+        });
+    }
+</script>
 
 </body>
 </html>
